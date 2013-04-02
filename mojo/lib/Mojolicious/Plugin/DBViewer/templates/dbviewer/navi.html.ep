@@ -1,0 +1,28 @@
+<%
+  my $database = param('database');
+  $database = '' unless defined $database;
+  my $table = param('table');
+  $table = '' unless defined $table;
+%>
+
+<ul class="breadcrumb">
+  <li>
+    <a href="<%= url_for($sprefix) %>">
+      <i class="icon-home"></i>
+    </a>
+    <span class="divider">/</span>
+  </li>
+  <li>
+    <a href="<%= url_for("$sprefix/tables?database=$database") %>">
+      <%= $database %>
+    </a>
+  </li>
+  % if ($table ne '') {
+    <li>
+      <span class="divider">/</span>
+      <a href="<%= url_for "$sprefix/table?database=$database&table=$table" %>">
+        <%= $table %>
+      </a>
+    </li>
+  % }
+</ul>

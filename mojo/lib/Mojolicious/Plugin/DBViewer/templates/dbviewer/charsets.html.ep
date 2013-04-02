@@ -1,0 +1,43 @@
+<%
+  # Command
+  my $command = $dbviewer->command;
+
+  # Validation
+  my $params = $command->params($self);
+  my $rule = [
+    database => {default => ''} => [
+      'safety_name'
+    ],
+  ];
+  my $vresult = $plugin->validator->validate($params, $rule);
+  
+  # Database
+  my $database = $vresult->data->{database};
+  
+  # Charsets
+  my $charsets = $command->show_charsets($database);
+%>
+
+% layout 'dbviewer_common', title => "Charsets in $database ";
+  % my $tables = [sort keys %$charsets];
+  %= include '/dbviewer/navi';
+
+
+  <h3>Charsets</h3>
+  <table class="table table-bordered">
+    % for (my $i = 0; $i < @$tables; $i += 3) {
+      <tr>
+        % for my $k (0 .. 2) {
+          <td>
+            % my $table = $tables->[$i + $k];
+            % if (defined $table) {
+              <a href="<%= url_for("$sprefix/table")->query(database => $database, table => $table) %>">
+                <%= $table %>
+              </a>
+              <b>(<%= $charsets->{$table} %>)</b>
+            % }
+          </td>
+        % }
+      </tr>
+    % }
+  </table>

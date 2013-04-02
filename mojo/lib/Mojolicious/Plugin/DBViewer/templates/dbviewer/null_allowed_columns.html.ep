@@ -1,0 +1,42 @@
+<%
+  # Command
+  my $command = $dbviewer->command;
+
+  # Validation
+  my $params = $command->params($self);
+  my $rule = [
+    database => {default => ''} => [
+      'safety_name'
+    ],
+  ];
+  my $vresult = $plugin->validator->validate($params, $rule);
+  my $database = $vresult->data->{database};
+  
+  # Null allowed columns
+  my $null_allowed_columns = $command->show_null_allowed_columns($database);
+%>
+
+% layout 'dbviewer_common', title => "Null allowed columns in $database";
+
+  % my $tables = [sort keys %$null_allowed_columns];
+  %= include '/dbviewer/navi';
+
+
+  <h3>Null allowed columns</h3>
+  <table class="table table-bordered">
+    % for (my $i = 0; $i < @$tables; $i += 3) {
+      <tr>
+        % for my $k (0 .. 2) {
+          <td>
+            % my $table = $tables->[$i + $k];
+            % if (defined $table) {
+              <a href="<%= url_for("$sprefix/table")->query(database => $database, table => $table) %>">
+                <%= $table %>
+              </a>
+              <b>(<%= join(', ', @{$null_allowed_columns->{$table} || []}) %>)</b>
+            % }
+          </td>
+        % }
+      </tr>
+    % }
+  </table>

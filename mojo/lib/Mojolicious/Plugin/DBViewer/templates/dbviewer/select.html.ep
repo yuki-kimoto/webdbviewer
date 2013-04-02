@@ -1,0 +1,304 @@
+<%
+  use Data::Page;
+  use Mojo::JSON;
+  
+  # Command
+  my $command = $dbviewer->command;
+
+  # Validation
+  my $params = $command->params($self);
+  my $operators = [
+    '',
+    'contains',
+    'like',
+    '=',
+    '<>',
+    '<',
+    '<=',
+    '>',,
+    '>=',
+    'is null',
+    'is not null',
+    'is space',
+    'is not space'
+  ];
+  my $rule = [
+    database => {default => ''} => [
+      'safety_name'
+    ],
+    table => {default => ''} => [
+      'safety_name'
+    ],
+    condition_column => [
+      'safety_name || blank'
+    ],
+    condition_value => [
+      'not_blank'
+    ],
+    operator => [
+      {in_array => $operators}
+    ],
+    'sort-key' => [
+      'safety_name'
+    ],
+  ];
+  my $vresult = $dbviewer->validator->validate($params, $rule);
+  my $database = $vresult->data->{database};
+  my $table = $vresult->data->{table};
+  
+  # DBI
+  my $dbi = $dbviewer->dbi;
+  
+  # Paramters
+  my $data = $vresult->data;
+  my $column = $data->{condition_column};
+  my $operator = $data->{operator};
+  my $value = $data->{condition_value};
+  
+  my $db_value;
+  my $where;
+  if (defined $column && $column ne '' && defined $operator && $operator ne '') {
+    # Where
+    $where = $dbi->where;
+    my $db_operator;
+    if ($operator eq 'contains') {
+      $db_operator = 'like';
+      $db_value = "%$value%";
+      $where->clause(":${column}{$db_operator}");
+      $where->param({$column => $db_value});
+    }
+    elsif ($operator eq 'is null' || $operator eq 'is not null') {
+      $where->clause("$column $operator");
+    }
+    elsif ($operator eq 'is space' || $operator eq 'is not space') {
+      $db_operator = $operator eq 'is space' ? '=' : '<>';
+      $db_value = '';
+      $where->clause(":${column}{$db_operator}");
+      $where->param({$column => $db_value});
+    }
+    else {
+      $db_operator = $operator;
+      $db_value = $value;
+      $where->clause(":${column}{$db_operator}");
+      $where->param({$column => $db_value});
+    }
+  }
+  
+  # Order by
+  my $sort_key = $data->{'sort-key'};
+  my $order_by = '';
+  if (defined $sort_key) {
+    $order_by = "order by $sort_key";
+    
+    my $order = param('order') || '';
+    if ($order eq 'asc' || $order eq 'desc') {
+      $order_by .= " $order";
+    }
+  }
+
+  # Limit
+  my $page = param('page') || 1;
+  my $count = 100;
+  my $offset = ($page - 1) * $count;
+  
+  # Get null allowed columns
+  my $result = $dbi->select(
+    table => "$database.$table",
+    where => $where,
+    append => "$order_by limit $offset, $count"
+  );
+  my $header = $result->header;
+  my $rows = $result->fetch_all;
+  my $sql = $dbi->last_sql;
+  
+  # Pager
+  my $total = $dbi->select(
+    'count(*)',
+    table => "$database.$table",
+    where => $where
+  )->value;
+  my $pager = Data::Page->new($total, $count, $page);
+  
+  # Global variable for included templates
+  stash(pager => $pager);
+  
+  my $output = param('output') || '';
+  if ($output eq 'json') {
+    $self->render_json;
+    return Mojo::JSON->new->encode({header => $header, rows => $rows});
+  }
+%>
+
+% layout 'dbviewer_common', title => "Select statement";
+  
+  %= javascript begin
+  
+    // Check all column checkbox or none
+    $(document).ready(function () {
+      
+      // Check all display columns
+      $('.check-all-btn').on('click', function () {
+        $('input[name="h"]').prop('checked', true);
+      });
+      
+      // Check none displya columns
+      $('.check-none-btn').on('click', function () {
+        $('input[name="h"]').prop('checked', false);
+      });
+      
+      // Initialize columns
+      var at_least_checked;
+      $('input[name="h"]').each(function () {
+        if ($(this).prop('checked')) {
+          at_least_checked = 1;
+        }
+      });
+      
+      if (at_least_checked) {
+        $('input[name="h"]').each(function () {
+          if ($(this).prop('checked')) {
+            var num = $(this).val();
+            $('.header-' + num).css('display', 'table-cell');
+            $('.column-' + num).css('display', 'table-cell');
+          }
+          else {
+            var num = $(this).val();
+            $('.header-' + num).css('display', 'none');
+            $('.column-' + num).css('display', 'none');
+          }
+        });
+      }
+    });
+  % end
+  
+  %= include '/dbviewer/navi';
+  
+  <h3>Select statement</h3>
+  
+  <div class="well well-small" style="background-color:white">
+    <form method="get" action="<%= url_for %>" style="margin-bottom:5px">
+      <div class="label">Condition</div>
+      % my $soperators = [@$operators];
+      % splice @$soperators, 0, 1, ['---' => ''];
+      <div class="form-inline" style="margin-bottom:10px">
+        <%= select_field condition_column => [['---' => ''], @$header], style => "width:250px" %>
+        <%= select_field operator => $soperators, style => "width:130px" %>
+        <%= input_tag 'condition_value', style => "width:470px" %>
+        <%= hidden_field database => param('database') %>
+        <%= hidden_field table => param('table') %>
+      </div>
+
+      <div class="label">Order</div>
+      <div class="form-inline" style="margin-bottom:10px">
+        <%= select_field 'sort-key' => [['---' => ''], @$header], style => "width:250px" %>
+        <%= select_field 'order' => [['---' => ''], 'asc', 'desc'], style => "width:130px" %>
+      </div>
+      <div>
+        <span class="label">
+          Columns
+        </span>
+        <span class="check-all-btn btn btn-mini btn-info">
+          All
+        </span>
+        <span class="check-none-btn btn btn-mini btn-info">
+          None
+        </span>
+      </div>
+      <div class="form-inline"  style="margin-bottom:10px">
+        % for (my $i = 0; $i < @$header; $i++) {
+          <label class="checkbox inline">
+            % my $h = $header->[$i];
+            <%= check_box h => $i + 1 %> <%= $h %>
+          </label>
+        % }
+      </div>
+      <div><%= submit_button 'Execute', class => 'btn', style => "margin-top:5px;width:150px" %></div>
+    </form>
+  </div>
+
+  <div class="well well-small">
+    <div><b>Query</b></div>
+    <div><%= $sql %></div>
+    % if (defined $db_value) {
+      <div><b>Parameter:</b> <%= $db_value eq '' ? '(Space)' : $db_value %></div>
+    % }
+  </div>
+  
+  <div>
+    % my $first_count = ($pager->current_page - 1) * $pager->entries_per_page + 1;
+    % my $last_count = $first_count + $pager->entries_on_this_page - 1;
+    <%= $first_count %> to <%= $last_count %> (Total <i><%= $pager->total_entries %></i>)
+  </div>
+  <table class="table table-bordered">
+    <tr class="success">
+      % for (my $i = 0; $i < @$header; $i++) {
+        % my $h = $header->[$i];
+        <th class="header-<%= $h %> header-<%= $i + 1 %>"><%= $h %></th>
+      % }
+    </tr>
+    % for (my $i = 0; $i < @$rows; $i++) {
+      % my $row = $rows->[$i];
+      <tr class="row-<%= $i + 1 %>">
+        % for (my $k = 0; $k < @$row; $k++) {
+          % my $data = $row->[$k];
+          % my $h = $header->[$k];
+          <td class="column-<%= $h %> column-<%= $k + 1 %>"><%= $data %></td>
+        % }
+      </tr>
+    % }
+  </table>
+
+  % my $first_page = $pager->first_page;
+  % my $current_page = $pager->current_page;
+  % my $last_page = $pager->last_page;
+  % if ($last_page > 1) {
+    <div>
+
+    </div>
+    <div class="pagination pagination-centered">
+      <ul>
+        <li>
+          <a style="color:#6666FF;font-size:70%" href="<%= url_for->query($self->req->params->clone)->query([page => 1]) %>">
+            Fisrt
+          </a>
+        </li>
+        % my $prev_page = $current_page - 1;
+        % $prev_page = 1 if $prev_page < 1;
+        <li>
+          <a href="<%= url_for->query($self->req->params->clone)->query([page => $current_page - 1]) %>">
+            <b>&laquo;</b>
+          </a>
+        </li>
+        % my $navi_first_page = $current_page - 10;
+        % my $navi_last_page = $current_page + 9;
+        % if ($navi_first_page < 1) {
+        %   $navi_last_page += 1 - $navi_first_page;
+        %   $navi_first_page = 1;
+        % }
+        % if ($navi_last_page > $last_page) {
+        %   $navi_last_page = $last_page;
+        %   $navi_first_page = $navi_last_page - 19;
+        %   $navi_first_page = 1 if $navi_first_page < 1;
+        % }
+        % for my $page ($navi_first_page .. $navi_last_page) {
+          <li class="<%= $page == $current_page ? 'active' : 'disable' %>">
+            <a href="<%= url_for->query($self->req->params->clone)->query([page => $page]) %>">
+              <%= $page %>
+            </a>
+          </li>
+        % }
+        % my $next_page = $current_page + 1;
+        % $next_page = $last_page if $next_page > $last_page;
+        <li>
+          <a href="<%= url_for->query($self->req->params->clone)->query([page => $next_page]) %>">
+            <b>&raquo;</b>
+          </a>
+        </li>
+        <li>
+          <a style="color:#6666FF;font-size:70%" href="<%= url_for->query($self->req->params->clone)->query([page => $last_page]) %>">
+             Last
+          </a>
+        </li>
+      </ul>
+    </div>
+  % }

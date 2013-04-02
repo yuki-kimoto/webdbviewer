@@ -1,0 +1,22 @@
+<%
+  # Command
+  my $command = $dbviewer->command;
+  
+  # Get databases
+  my $databases = $command->show_databases;
+  my $current_database = $command->current_database;
+%>
+
+% layout 'dbviewer_common';
+  <h3>Databases</h3>
+
+  <ul class="nav nav-list">
+    % for my $database (sort @$databases) {
+      <li>
+        <a href="<%= url_for("$sprefix/tables")->query(database => $database) %>">
+          <i class="icon-circle-arrow-right"></i> <%= $database %>
+          %= $current_database eq $database ? '(current)' : ''
+        </a>
+      </li>
+    % }
+  </ul>

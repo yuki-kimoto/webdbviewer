@@ -1,0 +1,52 @@
+<%
+  # Command
+  my $command = $dbviewer->command;
+  
+  # Validation
+  my $params = $command->params($self);
+  my $rule = [
+    database => {default => ''} => [
+      'safety_name'
+    ] 
+  ];
+  my $vresult = $dbviewer->validator->validate($params, $rule);
+  
+  # Database
+  my $database = $vresult->data->{database};
+  
+  # Table
+  my $tables = $command->show_tables($database);
+%>
+
+% layout 'dbviewer_common', title => "Tables in $database";
+
+  %= include '/dbviewer/navi';
+
+  <h3>Tables (<%= @$tables %>)</h3>
+  <table class="table table-bordered">
+    % for (my $i = 0; $i < @$tables; $i += 3) {
+      <tr>
+        % for my $k (0 .. 2) {
+          <td>
+            <a href="<%= url_for("$sprefix/table")->query(database => $database, table => $tables->[$i + $k]) %>">
+              <%= $tables->[$i + $k] %>
+            </a>
+          </td>
+        % }
+      </tr>
+    % }
+  </table>
+
+  <h3>Utilities</h3>
+  <ul class="nav nav-list">
+    % for my $utility (@$utilities) {
+      % my $path = $utility->{path};
+      % my $title = $utility->{title};
+      <li>
+        <a href="<%= url_for("$sprefix/$path")->query(database => $database) %>">
+          <i class="icon-circle-arrow-right"></i>
+          <%= $title %>
+        </a>
+      </li>
+    % }
+  </ul>

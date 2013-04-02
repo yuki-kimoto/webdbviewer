@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+  <head>
+    <title>
+      % if (stash 'title') {
+        <%= stash('title') %>
+      % }
+      <%= $main_title %>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    %= stylesheet '/css/bootstrap.css', rel => 'stylesheet', media => 'screen';
+    
+    %= javascript '/js/jquery-1.9.1.js';
+    %= javascript '/js/bootstrap.js';
+    
+    %= stylesheet begin
+      h1 {
+        text-align:center;
+      }
+      .container {
+        min-height:400px;
+      }
+      .footer {
+        margin-bottom:20px;
+        heigth:50px;
+      }
+    % end
+    
+  </head>
+  <body>
+    <div class="page-header">
+      <h1><a href="<%= "$sprefix" %>"><%= $main_title %></a></h1>
+    </div>
+    <div class="container">
+      %= content;
+    </div>
+    <hr>
+    <div class="text-center footer"><a href="https://github.com/yuki-kimoto/Mojolicious-Plugin-DBViewer">Mojolicious::Plugin::DBViewer</a></div>
+  </body>
+</html>

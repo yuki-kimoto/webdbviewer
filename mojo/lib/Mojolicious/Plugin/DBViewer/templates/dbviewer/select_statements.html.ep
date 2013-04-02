@@ -1,0 +1,39 @@
+<%
+  # Command
+  my $command = $dbviewer->command;
+
+  # Validation
+  my $params = $command->params($self);
+  my $rule = [
+    database => {default => ''} => [
+      'safety_name'
+    ]
+  ];
+  my $vresult = $dbviewer->validator->validate($params, $rule);
+  
+  # Database
+  my $database = $vresult->data->{database};
+
+  # Tables
+  my $tables = $command->show_tables($database);
+%>
+
+% layout 'dbviewer_common', title => "Show select tables in $database";
+
+  %= include '/dbviewer/navi';
+
+
+  <h3>Select statements</h3>
+  <table class="table table-bordered">
+    % for (my $i = 0; $i < @$tables; $i += 3) {
+      <tr>
+        % for my $k (0 .. 2) {
+          <td>
+            <a href="<%= url_for("$sprefix/select")->query(database => $database, table => $tables->[$i + $k]) %>">
+              <%= $tables->[$i + $k] %>
+            </a>
+          </td>
+        % }
+      </tr>
+    % }
+  </table>
