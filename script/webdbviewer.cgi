@@ -30,4 +30,4 @@ EOF
 
 # Start commands
 $ENV{MOJO_MODE} = 'production';
-Mojolicious::Commands->start_app('Pafdbviewer');
+Mojolicious::Commands->start_app('Webdbviewer');

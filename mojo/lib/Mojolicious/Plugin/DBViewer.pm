@@ -7,7 +7,7 @@ use DBIx::Custom;
 use Validator::Custom;
 use Carp 'croak';
 
-our $VERSION = '0.07';
+our $VERSION = '0.09';
 
 has 'command';
 has 'prefix';
@@ -81,12 +81,13 @@ sub register {
   $self->prefix($prefix);
   {
     # Config
+    my $site_title = $conf->{site_title} || 'DBViewer';
     my $r = $r->route("/$prefix")->to(
       'dbviewer#',
       namespace => $namespace,
       plugin => $self,
       sprefix => $sprefix,
-      main_title => 'DBViewer',
+      site_title => $site_title,
       driver => $driver,
       dbviewer => $self
     );
@@ -262,6 +263,12 @@ It is useful when C<under> is used.
 =head2 user
 
   user => 'kimoto'
+
+=head2 site_title
+
+  site_title => 'Your DB Viewer';
+
+Site title.
 
 Database user.
 

@@ -17,4 +17,4 @@ Please visit http://mojolicio.us for detailed installation instructions.
 EOF
 
 # Start commands
-Mojolicious::Commands->start_app('Pafdbviewer');
+Mojolicious::Commands->start_app('Webdbviewer');

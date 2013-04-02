@@ -1,5 +1,5 @@
 use 5.008007;
-package Pafdbviewer;
+package Webdbviewer;
 use Mojo::Base 'Mojolicious';
 use Carp 'croak';
 
@@ -12,7 +12,7 @@ sub startup {
   $self->plugin('INIConfig', {ext => 'conf'});
   
   # My Config(Development)
-  my $my_conf_file = $self->home->rel_file('pafdbviewer.my.conf');
+  my $my_conf_file = $self->home->rel_file('webdbviewer.my.conf');
   $self->plugin('INIConfig', {file => $my_conf_file}) if -f $my_conf_file;
   
   # Server Config
@@ -31,6 +31,7 @@ sub startup {
   my $password = $conf->{basic}{password};
   my $host = $conf->{basic}{host};
   my $port = $conf->{basic}{port};
+  my $site_title = $conf->{basic}{site_title} || 'Web DB Viewer';
   
   my $dsn;
   if ($dbtype eq 'sqlite') {
@@ -54,8 +55,9 @@ sub startup {
       dsn => $dsn,
       user => $user,
       password => $password,
-      prefix => ''
-    )
+      prefix => '',
+      site_title => $site_title
+    );
   };
   if ($@) {
     $self->log->error($@);

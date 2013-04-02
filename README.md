@@ -1,4 +1,4 @@
-# PAF DB Viewer
+# Web DB Viewer
 
 Database viewer to see database information on web browser
 
@@ -19,21 +19,21 @@ so you will find needed server easily.
 
 ## Download
 
-You donwload pafdbviewer.
+You donwload webdbviewer.
 
-https://github.com/yuki-kimoto/pafdbviewer/archive/0.01.zip
+https://github.com/yuki-kimoto/webdbviewer/archive/0.01.zip
 
 You expand zip file. You see the following directory.
 
-    pafdbviewer-0.01
+    webdbviewer-0.01
 
-Rename this pafdbviewer-0.01 to pafdbviewer.
+Rename this webdbviewer-0.01 to webdbviewer.
 
-    pafdbviewer-0.01 -> pafdbviewer
+    webdbviewer-0.01 -> webdbviewer
 
 ## Add database information
 
-You must set database information into **pafdbviewer.conf**.
+You must set database information into **webdbviewer.conf**.
 database type, database name, user, password, host, or port.
 (; is comment line)
 
@@ -66,7 +66,7 @@ You upload these directory into server document root by FTP.
 
 Access the following URL by browser.
 
-    http://(Your host name)/pafdbviewer/setup/setup.php
+    http://(Your host name)/webdbviewer/setup/setup.php
 
 (If you see forbidden message, you set this file permission to **755**.)
 
@@ -78,13 +78,12 @@ If you see result, click "Go to Application".
 
 ## You see Internal Server Error
 
-If you see internal server error, you see pafdbviewer/log/production.log.
+If you see internal server error, you see webdbviewer/log/production.log.
 You know what error is happned.
 
 ## Copyright & license
 
-Copyright 2013-2013 Perl Application Factory(Yuki Kimoto)
-all rights reserved.
+Copyright 2013-2013 Yuki Kimoto all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
