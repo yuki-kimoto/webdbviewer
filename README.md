@@ -81,3 +81,10 @@ If you see result, click "Go to Application".
 If you see internal server error, you see pafdbviewer/log/production.log.
 You know what error is happned.
 
+## Copyright & license
+
+Copyright 2013-2013 Perl Application Factory(Yuki Kimoto)
+all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
