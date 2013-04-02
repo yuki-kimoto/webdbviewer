@@ -37,26 +37,26 @@ You must set database information into **pafdbviewer.conf**.
 database type, database name, user, password, host, or port.
 (; is comment line)
 
-  [basic]
-  ;;; Database type
-  ; dbtype=mysql
-  ; dbtype=sqlite
-  dbtype=mysql
-  
-  ;;; Database name
-  dbname=myproject
-  
-  ;;; User
-  user=kimoto
-  
-  ;;; Password
-  password=secret
+    [basic]
+    ;;; Database type
+    ; dbtype=mysql
+    ; dbtype=sqlite
+    dbtype=mysql
 
-  ;;; Host
-  ;host=yourhost.com
-  
-  ;;; Port
-  ;port=1234
+    ;;; Database name
+    dbname=myproject
+
+    ;;; User
+    user=kimoto
+
+    ;;; Password
+    password=secret
+
+    ;;; Host
+    ;host=yourhost.com
+
+    ;;; Port
+    ;port=1234
 
 ## Upload Server by FTP
 
