@@ -15,7 +15,7 @@ BEGIN {
   my $mojolib = join('/', @base_dir, 'mojo', 'lib');
   my $lib = join('/', @base_dir, 'lib');
   my $extlib = join('/', @base_dir, 'extlib', 'lib', 'perl5');
-  eval 'use lib $mojolibe, $extlib, $lib';
+  eval 'use lib $mojolib, $extlib, $lib';
   croak $@ if $@;
 }
 
