@@ -13,11 +13,11 @@ Database viewer to see database information on web browser
 * Execute simple select statement
 * Display primary keys, null allowed columnes, database engines, and charsets in all tables.
 
-# Installation into Shared Server (Linux/Unix, Apache, SuExec, PHP5(CGI mode))
+# Installation into Shared Server
 
-Sahred Server must support Linux/Unix, Apache, SuExec, and PHP5(CGI mode).
+Sahred Server must support **Linux/Unix**, **Apache**, **SuExec**, and **PHP5(CGI mode)**.
 Many shared server support these,
-so you will find needed server easily.
+so you will find sutable server easily.
 
 ## Download
 
@@ -83,17 +83,10 @@ If you see result, click "Go to Application".
 If you see internal server error, you see webdbviewer/log/production.log.
 You know what error is happned.
 
-## Copyright & license
-
-Copyright 2013-2013 Yuki Kimoto all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
-# Instllation into Your Server (Unix/Linux)
+# Instllation into Unix/Linux Server
 
 Web DB Viewer have own web server,
-so you can execute application very easy.
+so you can execute application very easy and fast.
 
 ## Create webdbviewer user
 
@@ -179,3 +172,10 @@ If you are developer, you can start application development mode
 You can access the following URL.
       
     http://localhost:3000
+
+## Copyright & license
+
+Copyright 2013-2013 Yuki Kimoto all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
