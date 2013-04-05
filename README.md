@@ -125,13 +125,13 @@ Same as above Configuration section.
 ### Start
 
 You can start application start.
-Application is run in background, port is **10020** by default.
+Application is run in background, port is **10030** by default.
 
     ./webdbviewer
 
 You can access the following URL.
       
-    http://localhost:10020
+    http://localhost:10030
     
 If you change port, edit webdbviewer.conf.
 
