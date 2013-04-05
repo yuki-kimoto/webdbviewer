@@ -113,8 +113,15 @@ Download tar.gz archive and exapand it and change directory.
 
 You execute the following command. Needed moudles is installed.
 
-    perl cpanm -n -l extlib Module::CoreList
-    perl -Iextlib/lib/perl5 cpanm -n -L extlib --installdeps .
+    ./setup.sh
+
+## Test
+
+Do test to check setup process is success or not.
+
+    prove t
+
+If "All tests successful." is shown, setup process is success.
 
 ## Configuration
 

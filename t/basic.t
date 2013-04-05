@@ -1,4 +1,7 @@
 use Test::More 'no_plan';
+use strict;
+use warnings;
+
 use FindBin;
 
 
@@ -10,7 +13,7 @@ use Test::Mojo;
 use Webdbviewer;
 
 # Test Config
-$EVN{WEBDBVIEWER_TEST_CONF_FILE} = "$FindBin::Bin/test.conf";
+$ENV{WEBDBVIEWER_TEST_CONF_FILE} = "$FindBin::Bin/test.conf";
 
 # App
 my $app = Webdbviewer->new;

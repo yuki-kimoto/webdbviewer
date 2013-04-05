@@ -8,12 +8,20 @@ our $VERSION = '0.01';
 sub startup {
   my $self = shift;
   
-  # Config
-  $self->plugin('INIConfig', {ext => 'conf'});
-  
-  # My Config(Development)
-  my $my_conf_file = $self->home->rel_file('webdbviewer.my.conf');
-  $self->plugin('INIConfig', {file => $my_conf_file}) if -f $my_conf_file;
+  # Test Config
+  if (my $test_conf_file = $ENV{WEBDBVIEWER_TEST_CONF_FILE}) {
+    $self->plugin('INIConfig', {file => $test_conf_file})
+      if -f $test_conf_file;
+  }
+  # Production Config
+  else {
+    # Config
+    $self->plugin('INIConfig', {ext => 'conf'});
+    
+    # My Config(Development)
+    my $my_conf_file = $self->home->rel_file('webdbviewer.my.conf');
+    $self->plugin('INIConfig', {file => $my_conf_file}) if -f $my_conf_file;
+  }
   
   # Server Config
   my $conf = $self->config;
