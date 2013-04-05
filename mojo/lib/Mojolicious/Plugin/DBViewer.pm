@@ -7,7 +7,7 @@ use DBIx::Custom;
 use Validator::Custom;
 use Carp 'croak';
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 has 'command';
 has 'prefix';
@@ -25,6 +25,9 @@ sub register {
   
   # Slash and prefix
   my $sprefix = $prefix eq '' ? $prefix : "/$prefix";
+  
+  # Default charset
+  my $default_charset = $conf->{default_charset} || 'UTF-8';
   
   # DBI
   my $dbi = DBIx::Custom->connect(
@@ -89,7 +92,8 @@ sub register {
       sprefix => $sprefix,
       site_title => $site_title,
       driver => $driver,
-      dbviewer => $self
+      dbviewer => $self,
+      default_charset => $default_charset
     );
     
     # Default
@@ -220,6 +224,12 @@ Get L<DBIx::Connector> object internally used.
   my $connector;
   plugin('DBViewer', ..., connector_get => \$connector);
   my $dbh = $connector->dbh;
+
+=head2 default_charset B<EXPERIMENTAL>
+
+  default_charset => 'euc-jp'
+
+Default charset, default is C<UTF-8>.
 
 =head2 dsn
 
