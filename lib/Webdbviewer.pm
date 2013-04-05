@@ -1,6 +1,7 @@
 use 5.008007;
 package Webdbviewer;
 use Mojo::Base 'Mojolicious';
+use DBIx::Custom;
 use Carp 'croak';
 
 our $VERSION = '0.01';
@@ -42,6 +43,7 @@ sub startup {
   my $site_title = $conf->{basic}{site_title} || 'Web DB Viewer';
   
   my $dsn;
+  my $dbi_option = {};
   if ($dbtype eq 'sqlite') {
     $dsn = "dbi:SQLite:dbname=$dbname";
   }
@@ -49,6 +51,10 @@ sub startup {
     $dsn = "dbi:mysql:database=$dbname";
     $dsn .= ";host=$host" if defined $host && length $host;
     $dsn .= ";port=$port" if defined $host && length $host;
+    
+    my $mysql_read_default_file = $conf->{mysql}{mysql_read_default_file};
+    $dsn .= ";mysql_read_default_file=$mysql_read_default_file"
+      if defined $mysql_read_default_file && length $mysql_read_default_file;
   }
   else {
     my $error = "Error in configuration file: [basic]dbtype ($dbtype) is not supported";
@@ -57,6 +63,7 @@ sub startup {
   }
   
   # Load DBViewer plugin
+  my $connector;
   eval {
     $self->plugin(
       'DBViewer',
@@ -64,12 +71,26 @@ sub startup {
       user => $user,
       password => $password,
       prefix => '',
-      site_title => $site_title
+      site_title => $site_title,
+      option => $dbi_option,
+      connector_get => \$connector
     );
   };
   if ($@) {
     $self->log->error($@);
     croak $@;
+  }
+  
+  # DBI
+  my $dbi = DBIx::Custom->new(connector => $connector);
+  
+  # MySQL setting
+  if ($dbtype eq 'mysql') {
+    # set names
+    my $set_names = $conf->{mysql}{set_names};
+    if (defined $set_names && length $set_names) {
+      $dbi->dbh->do("set names $set_names");
+    }
   }
   
   # Reverse proxy support
