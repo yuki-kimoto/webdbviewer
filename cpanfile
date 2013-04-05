@@ -20,7 +20,6 @@ requires 'ExtUtils::ParseXS', '== 3.18';
 requires 'Test::MockModule', '== 0.05';
 requires 'DBI', '== 1.625';
 requires 'DBD::SQLite', '== 1.37';
-requires 'DBD::mysql', '== 4.022';
 requires 'Data::Page', '== 2.02';
 requires 'Class::Accessor::Chained', '== 0.01';
 requires 'Class::Accessor', '== 0.34';
