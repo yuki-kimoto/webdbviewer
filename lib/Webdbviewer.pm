@@ -63,6 +63,7 @@ sub startup {
       $dbi_option->{Callbacks}{connected} = sub {
         my $dbh = shift;
         $dbh->do("set names $set_names");
+        return;
       }
     }
   }
