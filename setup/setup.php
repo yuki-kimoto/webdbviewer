@@ -1,9 +1,4 @@
 <?php
-  ini_set( 'display_errors', 1 );
-  mkdir('/home/kimoto/public_html/webdbviewer/extlib')
-  
-  throw new Exception('aaa');
-  
   # Setup directory
   $setup_dir = getcwd();
 
