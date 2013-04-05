@@ -83,7 +83,9 @@ sub startup {
       prefix => '',
       site_title => $site_title,
       option => $dbi_option,
-      default_charset => $default_charset
+      default_charset => $default_charset,
+      footer_text => 'Web DB Viewer',
+      footer_link => 'https://github.com/yuki-kimoto/webdbviewer'
     );
   };
   if ($@) {

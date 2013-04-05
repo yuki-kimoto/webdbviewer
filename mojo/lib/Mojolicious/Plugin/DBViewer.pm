@@ -7,7 +7,7 @@ use DBIx::Custom;
 use Validator::Custom;
 use Carp 'croak';
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 has 'command';
 has 'prefix';
@@ -85,6 +85,11 @@ sub register {
   {
     # Config
     my $site_title = $conf->{site_title} || 'DBViewer';
+    my $footer_text = $conf->{footer_text} || 'Mojolicious::Plugin::DBViewer';
+    my $footer_link = $conf->{footer_link}
+      || 'http://search.cpan.org/dist/Mojolicious-Plugin-DBViewer'
+       . '/lib/Mojolicious/Plugin/DBViewer.pm';
+    
     my $r = $r->route("/$prefix")->to(
       'dbviewer#',
       namespace => $namespace,
@@ -93,7 +98,9 @@ sub register {
       site_title => $site_title,
       driver => $driver,
       dbviewer => $self,
-      default_charset => $default_charset
+      default_charset => $default_charset,
+      footer_text => $footer_text,
+      footer_link => $footer_link
     );
     
     # Default
@@ -150,7 +157,7 @@ Mojolicious::Plugin::DBViewer - Mojolicious plugin to display database informati
 
 =head1 CAUTION
 
-B<This module is alpha release. the feature will be changed without warnings.>
+B<This module is alpha release. features will be changed without warnings.>
 
 =head1 SYNOPSYS
 
@@ -252,7 +259,19 @@ Application base path, default to C<dbviewer>.
 You can access DB viewer by the following path.
 
   http://somehost.com/dbviewer2
-  
+
+=head2 footer_text
+
+  footer_text => 'Web DB Viewer'
+
+Footer text.
+
+=head2 footer_link
+
+  footer_link => 'https://github.com/yuki-kimoto/webdbviewer'
+
+Footer link
+
 =head2 option
 
   option => $option
@@ -261,7 +280,7 @@ DBI option (L<DBI> connect method's fourth argument).
 
 =head2 route
 
-    route => $route
+  route => $route
 
 Router, default to C<$app->routes>.
 
