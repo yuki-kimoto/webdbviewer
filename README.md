@@ -11,7 +11,7 @@ Database viewer to see database information on web browser
 * Execute simple select statement
 * Display primary keys, null allowed columnes, database engines, and charsets in all tables.
 
-# Instllation into Shared Server (Linux/Unix, Apache, SuExec, PHP5(CGI mode))
+# Installation into Shared Server (Linux/Unix, Apache, SuExec, PHP5(CGI mode))
 
 Sahred Server must support Linux/Unix, Apache, SuExec, and PHP5(CGI mode).
 Many shared server support these,
@@ -31,7 +31,7 @@ Rename this webdbviewer-0.01 to webdbviewer.
 
     webdbviewer-0.01 -> webdbviewer
 
-## Add database information
+## Configuration
 
 You must set database information into **webdbviewer.conf**.
 database type, database name, user, password, host, or port.
@@ -87,3 +87,86 @@ Copyright 2013-2013 Yuki Kimoto all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
+
+# Instllation into Your Server (Unix/Linux)
+
+Web DB Viewer have own web server,
+so you can execute application very easy.
+
+## Create webdbviewer user
+
+At first create **webdbviewer** user. This is not nesessary, but recommended.
+
+    useradd webdbviewer
+    su - webdbviewer
+    cd ~
+
+## Download
+
+Download tar.gz archive and exapand it and change directory. 
+
+    curl -kL https://github.com/yuki-kimoto/webdbviewer/archivewebdbviewer-0.03.tar.gz > webdbviewer-0.03.tar.gz
+    tar xf webdbviewer-0.03.tar.gz
+    cd webdbviewer-0.03
+
+## Setup
+
+You execute the following command. Needed moudles is installed.
+
+    perl cpanm -n -l extlib Module::CoreList
+    perl -Iextlib/lib/perl5 cpanm -n -L extlib --installdeps .
+
+## Configuration
+
+Same as above Configuration section.
+
+## Operation
+
+### Start
+
+You can start application start.
+Application is run in background, port is **10020** by default.
+
+    ./webdbviewer
+
+You can access the following URL.
+      
+    http://localhost:10020
+    
+If you change port, edit webdbviewer.conf.
+
+### Stop
+
+You can stop application by **--stop** option.
+
+    ./webdbviewer --stop
+
+### Operation by root user
+
+If you want to do operation by root user,
+you must do some configuration for security.
+
+You add **user** and **group** to **hypnotoad** section in **webdbviewer.conf**.
+
+    [hypnotoad]
+    ...
+    user=webdbviewer
+    group=webdbviewer
+
+Start application
+
+    /home/webdbviewer/webdbviewer
+
+Stop application
+
+    /home/webdbviewer/webdbviewer --stop
+
+### Developer
+
+If you are developer, you can start application development mode
+
+    ./morbo
+
+You can access the following URL.
+      
+    http://localhost:3000
