@@ -2,11 +2,9 @@
 
 Database viewer to see database information on web browser
 
-<hr>
+# Screen Shot
 
-<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20130405/20130405165125_original.png" width="800">
-
-<hr>
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20130405/20130405165125_original.png" width="850">
 
 # Features
 
