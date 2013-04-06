@@ -24,3 +24,8 @@ user/templates/*
 !user/templates/.gitignore
 extlib/*
 *.my.conf
+setup/log/*
+!setup/log/.gitignore
+setup/latest-build
+setup/work/*
+setup/build.log
