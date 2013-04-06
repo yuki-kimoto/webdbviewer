@@ -16,6 +16,7 @@ Database viewer to see database information on web browser
 # Installation into Shared Server
 
 Sahred Server must support **Linux/Unix**, **Apache**, **SuExec**, and **PHP5(CGI mode)**.
+(PHP is not necessary, if PHP exists, install process is easy.)
 Many shared server support these,
 so you will find sutable server easily.
 
@@ -70,7 +71,10 @@ Access the following URL by browser.
 
     http://(Your host name)/webdbviewer/setup/setup.php
 
-(If you see forbidden message, you set this file permission to **755**.)
+(If you don't access PHP file or don't have PHP,
+you can use CGI script
+http://(Your host name)/webdbviewer/setup/setup.cgi.
+please set this CGI script permission to 755)
 
 And click Setup button once and wait abount 5 minutes.
 
