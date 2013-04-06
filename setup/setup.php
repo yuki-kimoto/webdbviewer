@@ -1,4 +1,6 @@
 <?php
+  ini_set( 'display_errors', 1 );
+  
   # Setup directory
   if ($setup_dir = getcwd()) {
     # Setup CGI script
@@ -6,7 +8,10 @@
     
     # Chmod Setup CGI script
     if (chmod($setup_cgi_script, 0755)) {
-      http_redirect('setup.cgi');
+      $setup_cgi_url = $_SERVER['PHP_SELF'];
+      $setup_cgi_url = preg_replace('/\.php$/', '.cgi', $setup_cgi_url);
+      header("Location: $setup_cgi_url");
+      exit();
     }
     else {
       $error = "Can't $setup_cgi_script mode to 755";
