@@ -1,0 +1,15 @@
+#!/bin/env perl
+
+use strict;
+use warnings;
+use FindBin;
+
+my $app_path = "$FindBin::Bin/script/webdbveiwer";
+
+my $script = <<"EOS";
+#!/bin/sh
+$app_path \$*
+EOS
+
+print $script;
+
