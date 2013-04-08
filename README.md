@@ -114,10 +114,10 @@ At first create **webdbviewer** user. This is not nesessary, but recommended.
 
 Download tar.gz archive and exapand it and change directory. 
 
-    curl -kL https://github.com/yuki-kimoto/webdbviewer/archivewebdbviewer-0.03.tar.gz > webdbviewer-0.03.tar.gz
-    tar xf webdbviewer-0.03.tar.gz
-    mv webdbviewer-0.03 webdbviewer
-    cd webdbviewer-0.03
+    curl -kL https://github.com/yuki-kimoto/webdbviewer/archivewebdbviewer-0.01.tar.gz > webdbviewer-0.01.tar.gz
+    tar xf webdbviewer-0.01.tar.gz
+    mv webdbviewer-0.01 webdbviewer
+    cd webdbviewer
 
 ## Setup
 
