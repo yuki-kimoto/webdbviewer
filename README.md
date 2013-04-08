@@ -6,17 +6,23 @@ Database viewer to see database information on web browser
 
 # Features
 
-* Perl 5.8.7+ only needed
 * Support MySQL and SQLite
 * Display all table names
 * Display show create table
 * Execute simple select statement
 * Display primary keys, null allowed columnes, database engines, and charsets in all tables.
+* Perl 5.8.7+ only needed
+* CGI support
+* Having built-in web werver, Reverse Proxy support
 
 # Installation into Shared Server
 
-Sahred Server must support **Linux/Unix**, **Apache**, **SuExec**, and **PHP5(CGI mode)**.
-(PHP is not necessary, if PHP exists, install process is easy.)
+Sahred Server must support **Linux/Unix**, **Apache**, **SuExec**,
+**CGI**, and **PHP5(CGI mode)**.
+
+(PHP is not necessary, if PHP exists, install process is easy
+because you don't need to think about permission.)
+
 Many shared server support these,
 so you will find sutable server easily.
 
@@ -36,7 +42,7 @@ Rename this webdbviewer-0.01 to webdbviewer.
 
 ## Configuration
 
-You must set database information into **webdbviewer.conf**.
+You must set database information in **webdbviewer.conf**.
 database type, database name, user, password, host, or port.
 (; is comment line)
 
@@ -73,10 +79,11 @@ Access the following URL by browser.
 
 (If you don't access PHP file or don't have PHP,
 you can use CGI script
-http://(Your host name)/webdbviewer/setup/setup.cgi.
 please set this CGI script permission to 755)
 
-And click Setup button once and wait abount 5 minutes.
+    http://(Your host name)/webdbviewer/setup/setup.cgi.
+
+Click Setup button once and wait abount 5 minutes.
 
 ## Go to application
 
@@ -87,10 +94,13 @@ If you see result, click "Go to Application".
 If you see internal server error, you see webdbviewer/log/production.log.
 You know what error is happned.
 
-# Instllation into Unix/Linux Server
+# Instllation into own Unix/Linux Server
 
 Web DB Viewer have own web server,
-so you can execute application very easy and fast.
+so you can execute application very easy.
+This is much better than above way
+because you don't need to setup Apache environment,
+and performance is much much better.
 
 ## Create webdbviewer user
 
@@ -106,6 +116,7 @@ Download tar.gz archive and exapand it and change directory.
 
     curl -kL https://github.com/yuki-kimoto/webdbviewer/archivewebdbviewer-0.03.tar.gz > webdbviewer-0.03.tar.gz
     tar xf webdbviewer-0.03.tar.gz
+    mv webdbviewer-0.03 webdbviewer
     cd webdbviewer-0.03
 
 ## Setup
