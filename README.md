@@ -124,7 +124,7 @@ If "All tests successful." is shown, setup process is success.
 
 ## Configuration
 
-Same as above Configuration section.
+Same as Shared Server's Configuration section.
 
 ## Operation
 
@@ -140,6 +140,7 @@ You can access the following URL.
     http://localhost:10030
     
 If you change port, edit webdbviewer.conf.
+If you can't access this port, you might change firewall setting.
 
 ### Stop
 
@@ -152,7 +153,8 @@ You can stop application by **--stop** option.
 If you want to do operation by root user,
 you must do some configuration for security.
 
-You add **user** and **group** to **hypnotoad** section in **webdbviewer.conf**.
+You add **user** and **group** to **hypnotoad** section
+in **webdbviewer.conf** to execute not root user for security.
 
     [hypnotoad]
     ...
@@ -161,13 +163,13 @@ You add **user** and **group** to **hypnotoad** section in **webdbviewer.conf**.
 
 Start application
 
-    /home/webdbviewer/webdbviewer
+    /home/webdbviewer/webdbviewer/webdbviewer
 
 Stop application
 
-    /home/webdbviewer/webdbviewer --stop
+    /home/webdbviewer/webdbviewer/webdbviewer --stop
 
-### Developer
+## Developer
 
 If you are developer, you can start application development mode
 
@@ -176,6 +178,13 @@ If you are developer, you can start application development mode
 You can access the following URL.
       
     http://localhost:3000
+
+If you have git, it is easy to install from git.
+
+    git clone git://github.com/yuki-kimoto/webdbviewer.git
+
+It is useful to write configuration in ***webdbviewer.my.conf***
+, not webdbviewer.conf.
 
 ## Copyright & license
 
