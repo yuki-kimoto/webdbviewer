@@ -98,7 +98,7 @@ sub startup {
   $self->hook('before_dispatch' => sub {
     my $self = shift;
     
-    if ( $self->req->headers->header('X-Forwarded-Host')) {
+    if ($self->req->headers->header('X-Forwarded-Host')) {
       my $prefix = shift @{$self->req->url->path->parts};
       push @{$self->req->url->base->path->parts}, $prefix
         if defined $prefix;
