@@ -131,7 +131,7 @@ Do test to check setup process is success or not.
 
     prove t
 
-If "All tests successful." is shown, setup process is success.
+If "All tests successful" is shown, setup process is success.
 
 ## Configuration
 
@@ -186,7 +186,7 @@ add the start application command to **rc.local**(Linux).
 If you want to make easy to manage webdbviewer,
 Let's create run script in /usr/local/sbin.
 
-    /home/webdbviewer/webdbviewer/create_run_script > /usr/local/sbin/run_script
+    /home/webdbviewer/webdbviewer/create_run_script > /usr/local/sbin/run_webdbviewer
     chmod 755 /usr/local/sbin/run_webdbviewer
 
 You can start and stop application the following command.

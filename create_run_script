@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use FindBin;
 
-my $app_path = "$FindBin::Bin/script/webdbveiwer";
+my $app_path = "$FindBin::Bin/webdbveiwer";
 
 my $script = <<"EOS";
 #!/bin/sh
