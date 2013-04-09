@@ -17,7 +17,7 @@ Database viewer to see database information on web browser
 
 # Installation into Shared Server
 
-Sahred Server must support **Linux/Unix**, **Apache**, **SuExec**,
+Shared Server must support **Linux/Unix**, **Apache**, **SuExec**,
 **CGI**, and **PHP5(CGI mode)**.
 
 (PHP is not necessary, if PHP exists, install process is easy
@@ -114,7 +114,7 @@ At first create **webdbviewer** user. This is not nesessary, but recommended.
 
 Download tar.gz archive and exapand it and change directory. 
 
-    curl -kL https://github.com/yuki-kimoto/webdbviewer/archivewebdbviewer-0.01.tar.gz > webdbviewer-0.01.tar.gz
+    curl -kL https://github.com/yuki-kimoto/webdbviewer/archive/0.01.tar.gz > webdbviewer-0.01.tar.gz
     tar xf webdbviewer-0.01.tar.gz
     mv webdbviewer-0.01 webdbviewer
     cd webdbviewer
