@@ -25,3 +25,4 @@ requires 'Class::Accessor::Chained', '== 0.01';
 requires 'Class::Accessor', '== 0.34';
 requires 'Test::Exception', '== 0.31';
 requires 'Sub::Uplevel', '== 0.24';
+requires 'Digest::SHA', '== 5.84';
