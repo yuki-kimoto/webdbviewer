@@ -4,6 +4,10 @@ Database viewer to see database information on web browser
 
 <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20130405/20130405170135_original.png?1365148885" width="850">
 
+# Caution
+
+**This application is alpha release. Features will be changed without warnings.**
+
 # Features
 
 * Support MySQL and SQLite
@@ -30,15 +34,15 @@ so you will find sutable server easily.
 
 You donwload webdbviewer.
 
-https://github.com/yuki-kimoto/webdbviewer/archive/0.01.zip
+https://github.com/yuki-kimoto/webdbviewer/archive/latest.zip
 
 You expand zip file. You see the following directory.
 
-    webdbviewer-0.01
+    webdbviewer-latest
 
-Rename this webdbviewer-0.01 to webdbviewer.
+Rename this webdbviewer-latest to webdbviewer.
 
-    webdbviewer-0.01 -> webdbviewer
+    webdbviewer-latest -> webdbviewer
 
 ## Configuration
 
@@ -114,9 +118,9 @@ At first create **webdbviewer** user. This is not nesessary, but recommended.
 
 Download tar.gz archive and exapand it and change directory. 
 
-    curl -kL https://github.com/yuki-kimoto/webdbviewer/archive/0.01.tar.gz > webdbviewer-0.01.tar.gz
-    tar xf webdbviewer-0.01.tar.gz
-    mv webdbviewer-0.01 webdbviewer
+    curl -kL https://github.com/yuki-kimoto/webdbviewer/archive/latest.tar.gz > webdbviewer-latest.tar.gz
+    tar xf webdbviewer-latest.tar.gz
+    mv webdbviewer-latest webdbviewer
     cd webdbviewer
 
 ## Setup
