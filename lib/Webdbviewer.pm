@@ -41,7 +41,7 @@ sub startup {
   my $host = $conf->{basic}{host};
   my $port = $conf->{basic}{port};
   my $site_title = $conf->{basic}{site_title} || 'Web DB Viewer';
-  my $default_charset = $conf->{basic}{default_charset} || 'UTF-8';
+  my $charset = $conf->{basic}{charset} || 'UTF-8';
   
   my $dsn;
   my $dbi_option = {};
@@ -83,7 +83,7 @@ sub startup {
       prefix => '',
       site_title => $site_title,
       option => $dbi_option,
-      default_charset => $default_charset,
+      charset => $charset,
       footer_text => 'Web DB Viewer',
       footer_link => 'https://github.com/yuki-kimoto/webdbviewer'
     );

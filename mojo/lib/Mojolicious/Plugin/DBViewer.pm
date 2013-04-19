@@ -7,7 +7,7 @@ use DBIx::Custom;
 use Validator::Custom;
 use Carp 'croak';
 
-our $VERSION = '0.13';
+our $VERSION = '0.16';
 
 has 'command';
 has 'prefix';
@@ -27,7 +27,7 @@ sub register {
   my $sprefix = $prefix eq '' ? $prefix : "/$prefix";
   
   # Default charset
-  my $default_charset = $conf->{default_charset} || 'UTF-8';
+  my $charset = $conf->{charset} || 'UTF-8';
   
   # DBI
   my $dbi = DBIx::Custom->connect(
@@ -113,7 +113,7 @@ sub register {
       site_title => $site_title,
       driver => $driver,
       dbviewer => $self,
-      default_charset => $default_charset,
+      charset => $charset,
       footer_text => $footer_text,
       footer_link => $footer_link,
       utilities => $utilities
@@ -129,10 +129,6 @@ sub register {
 =head1 NAME
 
 Mojolicious::Plugin::DBViewer - Mojolicious plugin to display database information on browser
-
-=head1 CAUTION
-
-B<This module is alpha release. features will be changed without warnings.>
 
 =head1 SYNOPSYS
 
@@ -207,11 +203,11 @@ Get L<DBIx::Connector> object internally used.
   plugin('DBViewer', ..., connector_get => \$connector);
   my $dbh = $connector->dbh;
 
-=head2 default_charset B<EXPERIMENTAL>
+=head2 charset
 
-  default_charset => 'euc-jp'
+  charset => 'euc-jp'
 
-Default charset, default is C<UTF-8>.
+Database charset, default is C<UTF-8>.
 
 =head2 dsn
 
@@ -257,9 +253,7 @@ DBI option (L<DBI> connect method's fourth argument).
 
   route => $route
 
-Router, default to C<$app->routes>.
-
-It is useful when C<under> is used.
+Router for bridge, default to C<$app->routes>.
 
   my $bridge = $r->under(sub {...});
   plugin 'DBViewer', dsn => $dsn, route => $bridge;

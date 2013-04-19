@@ -58,7 +58,7 @@
   my $value = $data->{condition_value};
 
   
-  my $default_charset = stash('default_charset');
+  my $charset = stash('charset');
   my $db_value;
   my $where;
   if (defined $column && $column ne '' && defined $operator && $operator ne '') {
@@ -84,7 +84,7 @@
       $where->clause(":${column}{$db_operator}");
     }
     if (defined $db_value) {
-      $db_value = Encode::encode($default_charset, $db_value) if defined $db_value;
+      $db_value = Encode::encode($charset, $db_value) if defined $db_value;
       $where->param({$column => $db_value});
     }
   }
@@ -245,7 +245,7 @@
       % my $row = $rows->[$i];
       <tr class="row-<%= $i + 1 %>">
         % for (my $k = 0; $k < @$row; $k++) {
-          % my $data = Encode::decode($default_charset, $row->[$k]);
+          % my $data = Encode::decode($charset, $row->[$k]);
           % my $h = $header->[$k];
           <td class="column-<%= $h %> column-<%= $k + 1 %>"><%= $data %></td>
         % }
