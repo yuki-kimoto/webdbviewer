@@ -129,8 +129,9 @@
   
   my $output = param('output') || '';
   if ($output eq 'json') {
-    $self->render_json;
-    return Mojo::JSON->new->encode({header => $header, rows => $rows});
+    $self->render(json => {header => $header, rows => $rows});
+    $self->finish_rendering;
+    return;
   }
 %>
 
