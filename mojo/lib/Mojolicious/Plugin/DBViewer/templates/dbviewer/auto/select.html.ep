@@ -199,6 +199,7 @@
 
   # Header for join tables
   my $select_columns = [];
+  my $select_sorted_columns = [];
   my $table_columns = [];
   if ($join_mode) {
 
@@ -207,6 +208,9 @@
       my $result = $dbi->select(table => "$database.$t", where => '1 <> 1');
       my $header2 = $result->header;
       for my $h (sort @$header2) {
+        push @$select_sorted_columns, "$t.$h";
+      }
+      for my $h (@$header2) {
         push @$select_columns, "$t.$h";
         push @$columns, $h;
       }
@@ -315,28 +319,28 @@
       % my $sops = [@$ops];
       % splice @$sops, 0, 1, ['---' => ''];
       <div class="form-inline" style="margin-bottom:1px">
-        <%= select_field c1 => [['---' => ''], sort @$select_columns], style => "width:250px" %>
+        <%= select_field c1 => [['---' => ''], @$select_sorted_columns], style => "width:250px" %>
         <%= select_field op1 => $sops, style => "width:130px" %>
         <%= input_tag 'v1', style => "width:470px" %>
       </div>
       <div class="form-inline" style="margin-bottom:1px">
-        <%= select_field c2 => [['---' => ''], sort @$select_columns], style => "width:250px" %>
+        <%= select_field c2 => [['---' => ''], @$select_sorted_columns], style => "width:250px" %>
         <%= select_field op2 => $sops, style => "width:130px" %>
         <%= input_tag 'v2', style => "width:470px" %>
       </div>
       <div class="form-inline" style="margin-bottom:10px">
-        <%= select_field c3 => [['---' => ''], sort @$select_columns], style => "width:250px" %>
+        <%= select_field c3 => [['---' => ''], @$select_sorted_columns], style => "width:250px" %>
         <%= select_field op3 => $sops, style => "width:130px" %>
         <%= input_tag 'v3', style => "width:470px" %>
       </div>
       <div class="label">Order</div>
       <div style="margin-bottom:10px">
         <span class="form-inline" style="margin-right:10px">
-          <%= select_field 'sk1' => [['---' => ''], sort @$select_columns], style => "width:250px" %>
+          <%= select_field 'sk1' => [['---' => ''], @$select_sorted_columns], style => "width:250px" %>
           <%= select_field 'so1' => [['---' => ''], 'asc', 'desc'], style => "width:130px" %>
         </span>
         <span class="form-inline" style="margin-bottom:10px">
-          <%= select_field 'sk2' => [['---' => ''], sort @$select_columns], style => "width:250px" %>
+          <%= select_field 'sk2' => [['---' => ''], @$select_sorted_columns], style => "width:250px" %>
           <%= select_field 'so2' => [['---' => ''], 'asc', 'desc'], style => "width:130px" %>
         </span>
       </div>
