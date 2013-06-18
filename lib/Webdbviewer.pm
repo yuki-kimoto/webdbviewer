@@ -73,6 +73,21 @@ sub startup {
     croak $error;
   }
   
+  # Join
+  my $join = {};
+  for my $ncolumn (keys %{$conf->{join} || {}}) {
+    my $clause = $conf->{join}{$ncolumn};
+    if ($ncolumn =~ /(.+)\[\d+\]?/) {
+      my $column = $1;
+      if (defined $join->{$column}) {
+        push @{$join->{$column}}, $clause;
+      }
+      else {
+        $join->{$column} = [$clause];
+      }
+    }
+  }
+  
   # Load DBViewer plugin
   eval {
     $self->plugin(
@@ -85,7 +100,8 @@ sub startup {
       option => $dbi_option,
       charset => $charset,
       footer_text => 'Web DB Viewer',
-      footer_link => 'https://github.com/yuki-kimoto/webdbviewer'
+      footer_link => 'https://github.com/yuki-kimoto/webdbviewer',
+      join => $join
     );
   };
   if ($@) {

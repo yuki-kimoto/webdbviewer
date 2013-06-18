@@ -7,7 +7,7 @@ use DBIx::Custom;
 use Validator::Custom;
 use Carp 'croak';
 
-our $VERSION = '0.18';
+our $VERSION = '0.20';
 
 has 'command';
 has 'prefix';
@@ -47,7 +47,7 @@ sub register {
   $validator->register_constraint(
     safety_name => sub {
       my $name = shift;
-      return ($name || '') =~ /^\w+$/ ? 1 : 0;
+      return ($name || '') =~ /^[a-zA-Z0-9_\.]+$/ ? 1 : 0;
     }
   );
   $self->validator($validator);
@@ -116,7 +116,8 @@ sub register {
       charset => $charset,
       footer_text => $footer_text,
       footer_link => $footer_link,
-      utilities => $utilities
+      utilities => $utilities,
+      join => $conf->{join} || {}
     );
     
     # Auto Route
@@ -242,6 +243,17 @@ Footer text.
   footer_link => 'https://github.com/yuki-kimoto/webdbviewer'
 
 Footer link
+
+=head2 join
+
+  join => {
+    book => [
+      'left join author on book.author_id = author.id',
+      'left join title on book.title_id = title.id'
+    ]
+  }
+
+Join clause. If you set join clause, you can use join mode in select page.
 
 =head2 option
 
