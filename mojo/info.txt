@@ -1,1 +1,1 @@
-https://github.com/jamadam/mojo-legacy 3.84
+https://github.com/jamadam/mojo-legacy 4.07

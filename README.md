@@ -188,18 +188,19 @@ If you want to start application when os start,
 add the start application command to **rc.local**(Linux).
 
 If you want to make easy to manage webdbviewer,
-Let's create run script in /usr/local/sbin.
-
-    /home/webdbviewer/webdbviewer/create_run_script > /usr/local/sbin/run_webdbviewer
-    chmod 755 /usr/local/sbin/run_webdbviewer
+Let's create run script.
+    
+    mkdir -p /webapp
+    /home/webdbviewer/webdbviewer/create_run_script > /webapp/webdbviewer
+    chmod 755 /webapp/webdbviewer
 
 You can start and stop application the following command.
     
     # Start/Restart
-    run_webdbviewer
+    /webapp/webdbviewer
     
     # Stop
-    run_webdbviewer --stop
+    /webapp/webdbviewer --stop
     
 ## Developer
 
