@@ -188,10 +188,10 @@ sub select {
     page => {default => 1} => [
       'uint'
     ],
-    condition_column => [
+    c1 => [
       'safety_name'
     ],
-    condition_value => [
+    v1 => [
       'not_blank'
     ]
   ];
@@ -200,8 +200,8 @@ sub select {
   my $table = $vresult->data->{table};
   
   # Where
-  my $column = $vresult->data->{condition_column};
-  my $value = $vresult->data->{condition_value};
+  my $column = $vresult->data->{c1};
+  my $value = $vresult->data->{v1};
   
   my $where;
   if (defined $column && defined $value) {

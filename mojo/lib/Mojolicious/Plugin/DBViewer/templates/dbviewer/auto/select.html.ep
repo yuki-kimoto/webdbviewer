@@ -1,18 +1,19 @@
 <%
-  use Data::Page;
-  use Mojo::JSON;
+  use Data::Page ();
+  use Mojo::JSON ();
   use Encode ();
-  
+  use Data::Dumper ();
   
   # Command
   my $command = $dbviewer->command;
 
   # Validation
   my $params = $command->params($self);
-  my $operators = [
+  my $ops = [
     '',
     'contains',
     'like',
+    'in',
     '=',
     '<>',
     '<',
@@ -31,82 +32,158 @@
     table => {default => ''} => [
       'safety_name'
     ],
-    condition_column => [
+    c1 => [
       'safety_name || blank'
     ],
-    condition_value => [
+    c2 => [
+      'safety_name || blank'
+    ],
+    c3 => [
+      'safety_name || blank'
+    ],
+    v1 => [
       'not_blank'
     ],
-    operator => [
-      {in_array => $operators}
+    v2 => [
+      'not_blank'
     ],
-    'sort-key' => [
+    v3 => [
+      'not_blank'
+    ],
+    op1 => [
+      {in_array => $ops}
+    ],
+    op2 => [
+      {in_array => $ops}
+    ],
+    op3 => [
+      {in_array => $ops}
+    ],
+    sk1 => [
       'safety_name'
     ],
+    sk2 => [
+      'safety_name'
+    ],
+    so1 => [
+      'any'
+    ],
+    so2 => [
+      'any'
+    ],
+    u => {default => 'and'} => [
+      {in_array => ['and', 'or']}
+    ]
   ];
   my $vresult = $dbviewer->validator->validate($params, $rule);
-  my $database = $vresult->data->{database};
-  my $table = $vresult->data->{table};
+  my $vparams = $vresult->data;
+  my $database = $vparams->{database};
+  my $table = $vparams->{table};
   
+  # Paramters
+
   # DBI
   my $dbi = $dbviewer->dbi;
   
-  # Paramters
-  my $data = $vresult->data;
-  my $column = $data->{condition_column};
-  my $operator = $data->{operator};
-  my $value = $data->{condition_value};
-
-  
+  my $union = $vparams->{u};
   my $charset = stash('charset');
-  my $db_value;
-  my $where;
-  if (defined $column && $column ne '' && defined $operator && $operator ne '') {
-    # Where
-    $where = $dbi->where;
-    my $db_operator;
-    if ($operator eq 'contains') {
-      $db_operator = 'like';
-      $db_value = "%$value%";
-      $where->clause(":${column}{$db_operator}");
-    }
-    elsif ($operator eq 'is null' || $operator eq 'is not null') {
-      $where->clause("$column $operator");
-    }
-    elsif ($operator eq 'is space' || $operator eq 'is not space') {
-      $db_operator = $operator eq 'is space' ? '=' : '<>';
-      $db_value = '';
-      $where->clause(":${column}{$db_operator}");
-    }
-    else {
-      $db_operator = $operator;
-      $db_value = $value;
-      $where->clause(":${column}{$db_operator}");
-    }
-    if (defined $db_value) {
-      $db_value = Encode::encode($charset, $db_value) if defined $db_value;
-      $where->param({$column => $db_value});
+  my $where = $dbi->where;
+
+  my $merged_param = {};
+  my @clauses;
+  
+  for my $num (1 .. 3) {
+    my $column = $vparams->{"c$num"};
+    my $op = $vparams->{"op$num"};
+    my $value = $vparams->{"v$num"};
+
+    my $db_op;
+    my $param;
+    my $clause;
+
+    if (defined $column && $column ne '' && defined $op && $op ne '') {
+
+      my $db_value;
+
+      if ($op eq 'contains') {
+        $db_value = "%$value%";
+        $db_value = Encode::encode($charset, $db_value);
+        $clause = ":${column}{like}";
+        $param = {$column => $db_value};
+      }
+      elsif ($op eq 'in') {
+        my $values = $value;
+        $values =~ s/^ +//;
+        $values =~ s/ +$//;
+        my @values = split / +/, $values;
+        for my $value (@values) {
+          $value = Encode::encode($charset, $value);
+        }
+        $clause = "$column in (" . join(',', (":$column") x @values) . ")";
+        $param = {$column => \@values};
+      }
+      elsif ($op eq 'is null' || $op eq 'is not null') {
+        $clause = "$column $op";
+        $param = {};
+      }
+      elsif ($op eq 'is space' || $op eq 'is not space') {
+        $db_op = $op eq 'is space' ? '=' : '<>';
+        $clause = "$column $db_op ''";
+        $param = {};
+      }
+      else {
+        $db_op = $op;
+        $db_value = $value;
+        $clause = ":${column}{$db_op}";
+        $db_value = Encode::encode($charset, $db_value) if defined $db_value;
+        $param = {$column => $db_value};
+      }
+      push @clauses, $clause;
+
+      for my $column (keys %$param) {
+        if (exists $merged_param->{$column}) {
+          if (ref $param->{$column} eq 'ARRAY') {
+            push @{$merged_param->{$column}}, @{$param->{$column}};
+          }
+          else {
+            push @{$merged_param->{$column}}, $param->{$column};
+          }
+        }
+        else {
+          if (ref $param->{$column} eq 'ARRAY') {
+            $merged_param->{$column} = [@{$param->{$column}}];
+          }
+          else {
+            $merged_param->{$column} = [$param->{$column}];
+          }
+        }
+      }
     }
   }
   
+  $where->clause([$union, @clauses]);
+  $where->param($merged_param);
+
   # Order by
-  my $sort_key = $data->{'sort-key'};
-  my $order_by = '';
-  if (defined $sort_key) {
-    $order_by = "order by $sort_key";
-    
-    my $order = param('order') || '';
-    if ($order eq 'asc' || $order eq 'desc') {
-      $order_by .= " $order";
+  my @order_bys;
+  for my $num (1 .. 2) {
+    my $sort_key = $vparams->{"sk$num"};
+    if (defined $sort_key) {
+      my $column = "$sort_key";
+      
+      my $order = param("so$num") || '';
+      $order = '' unless $order eq 'desc';
+      push @order_bys, "$column $order";
     }
   }
+  my $order_by = @order_bys ? 'order by ' . join(',', @order_bys) : '';
 
   # Limit
   my $page = param('page') || 1;
   my $count = 100;
   my $offset = ($page - 1) * $count;
   
-  # Get null allowed columns
+  # Select
   my $result = $dbi->select(
     table => "$database.$table",
     where => $where,
@@ -129,6 +206,11 @@
   
   my $output = param('output') || '';
   if ($output eq 'json') {
+    for my $row (@$rows) {
+      for my $column (@$row) {
+        $column = Encode::decode($charset, $column);
+      }
+    }
     $self->render(json => {header => $header, rows => $rows});
     $self->finish_rendering;
     return;
@@ -183,21 +265,37 @@
   
   <div class="well well-small" style="background-color:white">
     <form method="get" action="<%= url_for %>" style="margin-bottom:5px">
-      <div class="label">Condition</div>
-      % my $soperators = [@$operators];
-      % splice @$soperators, 0, 1, ['---' => ''];
-      <div class="form-inline" style="margin-bottom:10px">
-        <%= select_field condition_column => [['---' => ''], @$header], style => "width:250px" %>
-        <%= select_field operator => $soperators, style => "width:130px" %>
-        <%= input_tag 'condition_value', style => "width:470px" %>
-        <%= hidden_field database => param('database') %>
-        <%= hidden_field table => param('table') %>
+      <div>
+        <span class="label">Condition</span>
+        <%= select_field u => ['and', 'or'], style => "width:70px" %>
       </div>
-
-      <div class="label">Order</div>
+      % my $sops = [@$ops];
+      % splice @$sops, 0, 1, ['---' => ''];
+      <div class="form-inline" style="margin-bottom:1px">
+        <%= select_field c1 => [['---' => ''], sort @$header], style => "width:250px" %>
+        <%= select_field op1 => $sops, style => "width:130px" %>
+        <%= input_tag 'v1', style => "width:470px" %>
+      </div>
+      <div class="form-inline" style="margin-bottom:1px">
+        <%= select_field c2 => [['---' => ''], sort @$header], style => "width:250px" %>
+        <%= select_field op2 => $sops, style => "width:130px" %>
+        <%= input_tag 'v2', style => "width:470px" %>
+      </div>
       <div class="form-inline" style="margin-bottom:10px">
-        <%= select_field 'sort-key' => [['---' => ''], @$header], style => "width:250px" %>
-        <%= select_field 'order' => [['---' => ''], 'asc', 'desc'], style => "width:130px" %>
+        <%= select_field c3 => [['---' => ''], sort @$header], style => "width:250px" %>
+        <%= select_field op3 => $sops, style => "width:130px" %>
+        <%= input_tag 'v3', style => "width:470px" %>
+      </div>
+      <div class="label">Order</div>
+      <div style="margin-bottom:10px">
+        <span class="form-inline" style="margin-right:10px">
+          <%= select_field 'sk1' => [['---' => ''], sort @$header], style => "width:250px" %>
+          <%= select_field 'so1' => [['---' => ''], 'asc', 'desc'], style => "width:130px" %>
+        </span>
+        <span class="form-inline" style="margin-bottom:10px">
+          <%= select_field 'sk2' => [['---' => ''], sort @$header], style => "width:250px" %>
+          <%= select_field 'so2' => [['---' => ''], 'asc', 'desc'], style => "width:130px" %>
+        </span>
       </div>
       <div>
         <span class="label">
@@ -219,15 +317,18 @@
         % }
       </div>
       <div><%= submit_button 'Execute', class => 'btn', style => "margin-top:5px;width:150px" %></div>
+      %= hidden_field database => scalar param('database');
+      %= hidden_field table => scalar param('table');
     </form>
   </div>
 
   <div class="well well-small">
     <div><b>Query</b></div>
     <div><%= $sql %></div>
-    % if (defined $db_value) {
-      <div><b>Parameter:</b> <%= $db_value eq '' ? '(Space)' : $db_value %></div>
-    % }
+    % local $Data::Dumper::Sortkeys = 1;
+    % my $param_dump = Data::Dumper::Dumper($merged_param);
+    % $param_dump =~ s/.+?= //;
+    <div><b>Parameter:</b> <%= $param_dump %></div>
   </div>
   
   <div>
@@ -246,9 +347,9 @@
       % my $row = $rows->[$i];
       <tr class="row-<%= $i + 1 %>">
         % for (my $k = 0; $k < @$row; $k++) {
-          % my $data = Encode::decode($charset, $row->[$k]);
+          % my $value = Encode::decode($charset, $row->[$k]);
           % my $h = $header->[$k];
-          <td class="column-<%= $h %> column-<%= $k + 1 %>"><%= $data %></td>
+          <td class="column-<%= $h %> column-<%= $k + 1 %>"><%= $value %></td>
         % }
       </tr>
     % }
