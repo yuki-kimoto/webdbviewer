@@ -101,7 +101,7 @@ sub startup {
       option => $dbi_option,
       charset => $charset,
       footer_text => 'Web DB Viewer',
-      footer_link => 'https://github.com/yuki-kimoto/webdbviewer',
+      footer_link => 'http://perlcodesample.sakura.ne.jp/webdbviewer-site/',
       join => $join
     );
   };
