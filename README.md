@@ -1,19 +1,15 @@
 # Web DB Viewer
 
-Database viewer to see database information on web browser
+Database viewer to see database information on web browser.
 
 <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20130405/20130405170135_original.png?1365148885" width="850">
-
-# Caution
-
-**This application is alpha release. Features will be changed without warnings.**
 
 # Features
 
 * Support MySQL and SQLite
 * Display all table names
 * Display show create table
-* Execute simple select statement
+* Execute simple select statement, and join support
 * Display primary keys, null allowed columnes, database engines, and charsets in all tables.
 * Perl 5.8.7+ only needed
 * CGI support
