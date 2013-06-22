@@ -4,7 +4,7 @@ use Mojo::Base 'Mojolicious';
 use DBIx::Custom;
 use Carp 'croak';
 
-our $VERSION = '0.01';
+our $VERSION = '1.0';
 
 sub startup {
   my $self = shift;
@@ -87,6 +87,7 @@ sub startup {
       }
     }
   }
+  $self->config->{_join_normalized} = $join;
   
   # Load DBViewer plugin
   eval {

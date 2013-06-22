@@ -219,6 +219,19 @@ If you have git, it is easy to install from git.
 It is useful to write configuration in ***webdbviewer.my.conf***
 , not webdbviewer.conf.
 
+## Internally Using Library
+
+* [Config::Tiny](http://search.cpan.org/dist/Config-Tiny/lib/Config/Tiny.pm)
+* [DBD::SQLite](http://search.cpan.org/dist/DBD-SQLite/lib/DBD/SQLite.pm)
+* [DBI](http://search.cpan.org/dist/DBI/DBI.pm)
+* [DBIx::Connector](http://search.cpan.org/dist/DBIx-Connector/lib/DBIx/Connector.pm)
+* [DBIx::Custom](http://search.cpan.org/dist/DBIx-Custom/lib/DBIx/Custom.pm)
+* [Mojolicious](http://search.cpan.org/~kimoto/DBIx-Custom/lib/DBIx/Custom.pm)
+* [Mojolicious::Plugin::INIConfig](http://search.cpan.org/dist/Mojolicious-Plugin-INIConfig/lib/Mojolicious/Plugin/INIConfig.pm)
+* [mojo-legacy](https://github.com/jamadam/mojo-legacy)
+* [Object::Simple](http://search.cpan.org/dist/Object-Simple/lib/Object/Simple.pm)
+* [Validator::Custom](http://search.cpan.org/dist/Validator-Custom/lib/Validator/Custom.pm)
+
 ## Copyright & license
 
 Copyright 2013-2013 Yuki Kimoto all rights reserved.
