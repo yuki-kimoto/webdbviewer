@@ -167,7 +167,7 @@ You can operation application by root user.
 
 you must setsid to user for security.
 
-  su - webdbviewer -c "chmod u+s /home/webdbviewer/webdbviewer"
+  su - webdbviewer -c "chmod u+s /home/webdbviewer/webdbviewer/webdbviewer"
 
 Start application
 
