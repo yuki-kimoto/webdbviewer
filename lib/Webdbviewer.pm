@@ -27,8 +27,8 @@ sub startup {
     
     # Server Config
     my $conf = $self->config;
-    $conf->{hypnotoad} ||= {listen => ["http://*:10030"]};
-    my $listen = $conf->{hypnotoad}{listen} || '';
+    $conf->{hypnotoad}{listen} ||= ["http://*:10030"];
+    my $listen = $conf->{hypnotoad}{listen};
     if ($listen ne '' && ref $listen ne 'ARRAY') {
       $listen = [ split /,/, $listen ];
     }
