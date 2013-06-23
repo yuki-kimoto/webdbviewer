@@ -161,16 +161,13 @@ You can stop application by **--stop** option.
 
 ### Operation by root user
 
-If you want to do operation by root user,
-you must do some configuration for security.
+You can operation application by root user.
 
-You add **user** and **group** to **hypnotoad** section
-in **webdbviewer.conf** to execute not root user for security.
+  su -
 
-    [hypnotoad]
-    ...
-    user=webdbviewer
-    group=webdbviewer
+you must setsid to user for security.
+
+  su - webdbviewer -c "chmod u+s /home/webdbviewer/webdbviewer"
 
 Start application
 
