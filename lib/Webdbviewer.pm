@@ -9,31 +9,39 @@ our $VERSION = '1.0';
 sub startup {
   my $self = shift;
   
-  # Test Config
-  if (my $test_conf_file = $ENV{WEBDBVIEWER_TEST_CONF_FILE}) {
-    $self->plugin('INIConfig', {file => $test_conf_file})
-      if -f $test_conf_file;
-  }
-  # Production Config
-  else {
-    # Config
-    $self->plugin('INIConfig', {ext => 'conf'});
+  eval {
+    # Test Config
+    if (my $test_conf_file = $ENV{WEBDBVIEWER_TEST_CONF_FILE}) {
+      $self->plugin('INIConfig', {file => $test_conf_file})
+        if -f $test_conf_file;
+    }
+    # Production Config
+    else {
+      # Config
+      $self->plugin('INIConfig', {ext => 'conf'});
+      
+      # My Config(Development)
+      my $my_conf_file = $self->home->rel_file('webdbviewer.my.conf');
+      $self->plugin('INIConfig', {file => $my_conf_file}) if -f $my_conf_file;
+    }
     
-    # My Config(Development)
-    my $my_conf_file = $self->home->rel_file('webdbviewer.my.conf');
-    $self->plugin('INIConfig', {file => $my_conf_file}) if -f $my_conf_file;
+    # Server Config
+    my $conf = $self->config;
+    $conf->{hypnotoad} ||= {listen => ["http://*:10030"]};
+    my $listen = $conf->{hypnotoad}{listen} || '';
+    if ($listen ne '' && ref $listen ne 'ARRAY') {
+      $listen = [ split /,/, $listen ];
+    }
+    $conf->{hypnotoad}{listen} = $listen;
+  };
+  if ($@) {
+    my $error = "Config file load error: $@";
+    $self->log->error($error);
+    croak $error;
   }
-  
-  # Server Config
-  my $conf = $self->config;
-  $conf->{hypnotoad} ||= {listen => ["http://*:10030"]};
-  my $listen = $conf->{hypnotoad}{listen} || '';
-  if ($listen ne '' && ref $listen ne 'ARRAY') {
-    $listen = [ split /,/, $listen ];
-  }
-  $conf->{hypnotoad}{listen} = $listen;
   
   # Database Config
+  my $conf = $self->config;
   my $dbtype = $conf->{basic}{dbtype} || '';
   my $dbname = $conf->{basic}{dbname} || '';
   my $user = $conf->{basic}{user};
