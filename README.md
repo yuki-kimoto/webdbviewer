@@ -163,11 +163,11 @@ You can stop application by **--stop** option.
 
 You can operation application by root user.
 
-  su -
+    su -
 
 you must setsid to user for security.
 
-  su - webdbviewer -c "chmod u+s /home/webdbviewer/webdbviewer/webdbviewer"
+    su - webdbviewer -c "chmod u+s /home/webdbviewer/webdbviewer/webdbviewer"
 
 Start application
 
