@@ -159,23 +159,17 @@ You can stop application by **--stop** option.
 
     ./webdbviewer --stop
 
-### Operation by root user
+### Operation from root user
 
-You can operation application by root user.
-
-    su -
-
-you must setsid to user for security.
-
-    su - webdbviewer -c "chmod u+s /home/webdbviewer/webdbviewer/webdbviewer"
+You can operation application from root user.
 
 Start application
 
-    /home/webdbviewer/webdbviewer/webdbviewer
+    sudo -u webdbviewer /home/webdbviewer/webdbviewer/webdbviewer
 
 Stop application
 
-    /home/webdbviewer/webdbviewer/webdbviewer --stop
+    sudo -u webdbviewer /home/webdbviewer/webdbviewer/webdbviewer --stop
 
 If you want to start application when os start,
 add the start application command to **rc.local**(Linux).
@@ -184,7 +178,8 @@ If you want to make easy to manage webdbviewer,
 Let's create run script.
     
     mkdir -p /webapp
-    /home/webdbviewer/webdbviewer/create_run_script > /webapp/webdbviewer
+    echo '#!/bin/sh' > /webapp/webdbviewer
+    echo 'sudo -u webdbviewer /home/webdbviewer/webdbviewer/webdbviewer $*' >> /webapp/webdbviewer
     chmod 755 /webapp/webdbviewer
 
 You can start and stop application the following command.
