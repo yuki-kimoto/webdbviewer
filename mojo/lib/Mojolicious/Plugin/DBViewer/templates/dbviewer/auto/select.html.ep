@@ -260,7 +260,6 @@
       }
     }
     $self->render(json => {header => $header, rows => $rows});
-    $self->finish_rendering;
     return;
   }
 %>
