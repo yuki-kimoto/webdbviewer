@@ -13,7 +13,9 @@
     
     %= javascript '/js/jquery-1.9.1.js';
     %= javascript '/js/bootstrap.js';
-    
+
+    <link rel="shortcut icon" href="<%= url_for('/webdbviewer-favicon.png') %>" type="image/png" >
+
     %= stylesheet begin
       h1 {
         text-align:center;
