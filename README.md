@@ -1,4 +1,4 @@
-# Web DB Viewer
+# WebDBViewer
 
 Database viewer to see database information on web browser.
 
@@ -96,7 +96,7 @@ You know what error is happned.
 
 # Instllation into own Unix/Linux Server
 
-Web DB Viewer have own web server,
+WebDBViewer have own web server,
 so you can execute application very easy.
 This is much better than above way
 because you don't need to setup Apache environment,
@@ -209,7 +209,7 @@ It is useful to write configuration in ***webdbviewer.my.conf***
 
 ## Web Site
 
-[Web DB Viewer Site](http://perlcodesample.sakura.ne.jp/webdbviewer-site/)
+[WebDBViewer Site](http://perlcodesample.sakura.ne.jp/webdbviewer-site/)
 
 ## Internally Using Library
 

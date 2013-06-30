@@ -48,7 +48,7 @@ sub startup {
   my $password = $conf->{basic}{password};
   my $host = $conf->{basic}{host};
   my $port = $conf->{basic}{port};
-  my $site_title = $conf->{basic}{site_title} || 'Web DB Viewer';
+  my $site_title = $conf->{basic}{site_title} || 'WebDBViewer';
   my $charset = $conf->{basic}{charset} || 'UTF-8';
   
   my $dsn;
@@ -108,7 +108,7 @@ sub startup {
       site_title => $site_title,
       option => $dbi_option,
       charset => $charset,
-      footer_text => 'Web DB Viewer',
+      footer_text => 'WebDBViewer',
       footer_link => 'http://perlcodesample.sakura.ne.jp/webdbviewer-site/',
       join => $join
     );

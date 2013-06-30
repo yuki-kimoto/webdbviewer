@@ -22,7 +22,7 @@ my $config = $app->config;
 # Test
 my $t = Test::Mojo->new($app);
 
-$t->get_ok('/')->content_like(qr/Web DB Viewer/);
+$t->get_ok('/')->content_like(qr/WebDBViewer/);
 $t->content_like(qr/main/);
 
 # Config
@@ -32,7 +32,7 @@ is($config->{basic}{user}, 'kimoto');
 is($config->{basic}{password}, 'a');
 is($config->{basic}{host}, 'some.com');
 is($config->{basic}{port}, 10000);
-is($config->{basic}{site_title}, 'Web DB Viewer');
+is($config->{basic}{site_title}, 'WebDBViewer');
 is_deeply($config->{hypnotoad}{listen}, ['http://*:10030']);
 is($config->{mysql}{mysql_read_default_file}, '/etc/my.cnf');
 is($config->{mysql}{set_names}, 'ujis');
