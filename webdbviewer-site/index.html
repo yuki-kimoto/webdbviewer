@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>
-      Web DB Viewer - Database viewer to see database information on web browser.
+      WebDBViewer - Database viewer to see database information on web browser.
     </title>
     <style>/*<![CDATA[*/
 
@@ -102,6 +102,10 @@
       margin-left: 5em;
       padding-top: 3px;
     }
+    #webdbviewerbar-logo a {
+      color:white;
+      text-decoration:none;
+    }
     #webdbviewerbar-links {
       display:table-cell;
       float: right;
@@ -126,9 +130,11 @@
 
 /*]]>*/</style>
   <div id="webdbviewerbar-logo" style="color:white;font-size:20px;padding-top:12px;padding-left:60px">
-    Web DB Viewer
+    <a href=".">WebDBViewer</a>
   </div>
   <div id="webdbviewerbar-links">
+    <a href="http://perlcodesample.sakura.ne.jp/webdbviewer.cgi">Example</a>
+    <a href="https://github.com/yuki-kimoto/webdbviewer/archive/latest.zip">Download</a>
     <a href="https://github.com/yuki-kimoto/webdbviewer">Repository & Documentation</a>
     <a href="http://twitter.com/perlcodesample2">Twitter</a>
   </div>
@@ -141,34 +147,40 @@
       Database viewer to see database information on web browser.
     </h1>
     <p>
-      Web DB Viewer is database viewer to see database infromation on web browser.
+      WebDBViewer is database viewer to see database infromation on web browser.
       This is like phpMyAdmin, but only provide viewer feature.
       you can install this application into unix/linux.
       This is free software.
     </p>
 
     <p>
-      <a href="https://github.com/yuki-kimoto/webdbviewer">
-        <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20130405/20130405170135_original.png?1365148885" width="800" alt="Web DB Viewer">
+      <a href=".">
+        <img src="http://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20130630/20130630082021_original.png?1372548048" width="800" alt="WebDBViewer">
       </a>
     </p>
 
     <h2>Features</h2>
     <ul>
       <li>
+        Display database information on web browser.
+      </li>
+      <li>
         Support MySQL and SQLite.
       </li>
       <li>
-        Display all table names.
+        Execute simple select statement.
       </li>
       <li>
-        Display primary keys, null allowed columnes, database engines, and charsets in all tables.
+        Join mode support, You can search rows using joined table's column condition.
       </li>
       <li>
-        CGI support.
+        Display table names, show create table, primary keys, null allowed columnes, database engines, and charsets.
       </li>
       <li>
-        Having built-in web werver, Reverse Proxy support.
+        CGI support, and having built-in prefork web werver which reverse proxy support.
+      </li>
+      <li>
+        Support many operating system. Unix, Linux, and cygwin on Windows.
       </li>
       <li>
         Perl 5.8.7+ only needed.
@@ -179,15 +191,22 @@
     <pre>  <a href="http://perlcodesample.sakura.ne.jp/webdbviewer.cgi">Example</a></pre>
     
     <h2>Download</h2>
-    <pre>  <a href="https://github.com/yuki-kimoto/webdbviewer/archive/latest.zip">Download Web DB Viewer</a> </pre>
+    <pre>  <a href="https://github.com/yuki-kimoto/webdbviewer/archive/latest.zip">Download</a> </pre>
     
     <h2>Repository & Documentation</h2>
-    <pre>  <a href="https://github.com/yuki-kimoto/webdbviewer">Repository & Documentation</a> </pre>
+    <pre>  <a href="https://github.com/yuki-kimoto/webdbviewer">Repository & Documentation</a> </pre>    
     
+    <hr style="margin-top:20px;margin-bottom:10px">
+    <div>
+      <b>Sister project</b>
+    </div>
+    <div>
+      <a href="http://perlcodesample.sakura.ne.jp/gitprep-site">GitPrep</a>
+    </div>
 </div>
 <div id="footer" style="margin-bottom:10px">
-  <a href="https://github.com/yuki-kimoto/webdbviewer" style="text-decoration:none;color:#666;">
-    Web DB Viewer
+  <a href="." style="text-decoration:none;color:#666;">
+    WebDBViewer
   </a>
 </div>
 </body>

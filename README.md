@@ -6,14 +6,14 @@ Database viewer to see database information on web browser.
 
 # Features
 
-* Support MySQL and SQLite
-* Display all table names
-* Display show create table
-* Execute simple select statement, and join support
-* Display primary keys, null allowed columnes, database engines, and charsets in all tables.
-* Perl 5.8.7+ only needed
-* CGI support
-* Having built-in web werver, Reverse Proxy support
+* Display database information on web browser.
+* Support MySQL and SQLite.
+* Execute simple select statement.
+* Join mode support, You can search rows using joined table's column condition.
+* Display table names, show create table, primary keys, null allowed columnes, database engines, and charsets.
+* CGI support, and having built-in prefork web werver which reverse proxy support.
+* Support many operating system. Unix, Linux, and cygwin on Windows.
+* Perl 5.8.7+ only needed.
 
 # Installation into Shared Server
 
@@ -223,6 +223,10 @@ It is useful to write configuration in ***webdbviewer.my.conf***
 * [mojo-legacy](https://github.com/jamadam/mojo-legacy)
 * [Object::Simple](http://search.cpan.org/dist/Object-Simple/lib/Object/Simple.pm)
 * [Validator::Custom](http://search.cpan.org/dist/Validator-Custom/lib/Validator/Custom.pm)
+
+## Sister project
+
+* [GitPrep](https://github.com/yuki-kimoto/gitprep) - Github clone. you can install portable github system into unix/linux.
 
 ## Copyright & license
 
