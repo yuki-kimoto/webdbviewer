@@ -1,14 +1,8 @@
-# WebDBViewer - Webブラウザからデータベースの情報を見るためのデータベースビューア
+# WebDBViewer
 
-　<strong>WebDBViewer</strong>の1.0をリリースしたのでお知らせします。<strong>WebDBViewer</strong>は<strong>Webブラウザ</strong>から<strong>データベースの情報を見る</strong>ための<strong>データベースビューア</strong>です。
+Database viewer to see database information on web browser.
 
-
-WebDBViewer is database viewer to see database infromation on web browser.
-      This is like phpMyAdmin, but only provide viewer feature.
-      you can install this application into unix/linux.
-      This is free software.
-      
-<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20130405/20130405170135_original.png?1365148885" width="8">
+<img src="http://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20130630/20130630082021_original.png" width="800">
 
 # Features
 
