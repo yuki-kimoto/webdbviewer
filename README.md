@@ -179,7 +179,7 @@ Let's create run script.
     
     mkdir -p /webapp
     echo '#!/bin/sh' > /webapp/webdbviewer
-    echo 'sudo -u webdbviewer /home/webdbviewer/webdbviewer/webdbviewer $*' >> /webapp/webdbviewer
+    echo 'su - webdbviewer -c "/home/webdbviewer/webdbviewer/webdbviewer $*"' >> /webapp/webdbviewer
     chmod 755 /webapp/webdbviewer
 
 You can start and stop application the following command.
