@@ -4,7 +4,7 @@ use Mojo::Base 'Mojolicious';
 use DBIx::Custom;
 use Carp 'croak';
 
-our $VERSION = '1.1';
+our $VERSION = 'v1.2';
 
 sub startup {
   my $self = shift;
