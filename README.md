@@ -15,32 +15,116 @@ Database viewer to see database information on web browser.
 * Support many operating system. Unix, Linux, and cygwin on Windows.
 * Perl 5.8.7+ only needed.
 
-# Installation into Shared Server
+## Check Perl Version
 
-Shared Server must support **Linux/Unix**, **Apache**, **SuExec**,
-**CGI**, and **PHP5(CGI mode)**.
+Check Perl version. You can use webdbviewer if the Perl version is 5.8.7+;
 
-(PHP is not necessary, if PHP exists, install process is easy
-because you don't need to think about permission.)
+    perl -v
 
-Many shared server support these,
-so you will find sutable server easily.
+## A. Installation when you run webdbviewer as CGI script
 
-## Download
+Download tar.gz archive, expand it and change directory:
 
-You donwload webdbviewer.
+    curl -kL https://github.com/yuki-kimoto/webdbviewer/archive/latest.tar.gz > webdbviewer-latest.tar.gz
+    tar xf webdbviewer-latest.tar.gz
+    mv webdbviewer-latest webdbviewer
+    cd webdbviewer
 
-https://github.com/yuki-kimoto/webdbviewer/archive/latest.zip
+Setup. Needed module is installed.
 
-You expand zip file. You see the following directory.
+    ./setup.sh
 
-    webdbviewer-latest
+Check setup. Run the following command.
 
-Rename this webdbviewer-latest to webdbviewer.
+    prove t
 
-    webdbviewer-latest -> webdbviewer
+If "syntax OK" is displayed, setup is sucseed.
 
-## Configuration
+You must set database information in **webdbviewer.conf**.
+database type, database name, user, password, host, or port.
+(; is comment line)
+
+    [basic]
+    ;;; Database type
+    ; dbtype=mysql
+    ; dbtype=sqlite
+    dbtype=mysql
+
+    ;;; Database name
+    dbname=myproject
+
+    ;;; User
+    user=kimoto
+
+    ;;; Password
+    password=secret
+
+    ;;; Host
+    ;host=yourhost.com
+
+    ;;; Port
+    ;port=1234
+    
+You can access the following URL.
+
+    http://yourhost/somepath/webdbviewer/webdbviewer.cgi
+
+### If you see Internal Server Error
+
+If you see an internal server error, look at the log file (webdbviewer/log/production.log)
+to see what problem has occurred.
+
+### Additional work when you don't run CGI script by your user.
+
+If CGI script isn't run by your user, you need the following work.
+For example, CGI script is run by apache user.
+
+Change user and group of all files in webdbviewer directory to apache 
+
+    chown -R apache:apache webdbviewer
+
+In this case, you server need to execute CGI.
+Check apache config file.
+
+For example, you need the following config.
+
+    <Directory /var/www/html>
+        Options +ExecCGI
+        AddHandler cgi-script .cgi
+    </Directory>
+
+## B. Installation when you run webdbviewer as embdded web server
+
+webdbviewer has its own web server,
+so you can start using the application very easily.
+In this way, performance is much better than CGI.
+
+### Create webdbviewer user
+
+Create a **webdbviewer** user. This is not necessary, but recommended:
+
+    useradd webdbviewer
+    su - webdbviewer
+    cd ~
+
+### Download
+
+Download tar.gz archive, expand it and change directory:
+
+    curl -kL https://github.com/yuki-kimoto/webdbviewer/archive/latest.tar.gz > webdbviewer-latest.tar.gz
+    tar xf webdbviewer-latest.tar.gz
+    mv webdbviewer-latest webdbviewer
+    cd webdbviewer
+
+Setup. Needed module is installed.
+
+    ./setup.sh
+
+Check setup. Run the following command.
+
+    prove t
+
+If "syntax OK" is displayed, setup is sucseed.
 
 You must set database information in **webdbviewer.conf**.
 database type, database name, user, password, host, or port.
@@ -67,128 +151,25 @@ database type, database name, user, password, host, or port.
     ;;; Port
     ;port=1234
 
-## Upload Server by FTP
-
-You upload these directory into server document root by FTP.
-
-## Setup
-
-Access the following URL by browser.
-
-    http://(Your host name)/webdbviewer/setup/setup.php
-
-(If you don't access PHP file or don't have PHP,
-you can use CGI script
-please set this CGI script permission to 755)
-
-    http://(Your host name)/webdbviewer/setup/setup.cgi.
-
-Click Setup button once and wait abount 5 minutes.
-
-## Go to application
-
-If you see result, click "Go to Application".
-
-## You see Internal Server Error
-
-If you see internal server error, you see webdbviewer/log/production.log.
-You know what error is happned.
-
-# Instllation into own Unix/Linux Server
-
-WebDBViewer have own web server,
-so you can execute application very easy.
-This is much better than above way
-because you don't need to setup Apache environment,
-and performance is much much better.
-
-## Create webdbviewer user
-
-At first create **webdbviewer** user. This is not nesessary, but recommended.
-
-    useradd webdbviewer
-    su - webdbviewer
-    cd ~
-
-## Download
-
-Download tar.gz archive and exapand it and change directory. 
-
-    curl -kL https://github.com/yuki-kimoto/webdbviewer/archive/latest.tar.gz > webdbviewer-latest.tar.gz
-    tar xf webdbviewer-latest.tar.gz
-    mv webdbviewer-latest webdbviewer
-    cd webdbviewer
-
-## Setup
-
-You execute the following command. Needed moudles is installed.
-
-    ./setup.sh
-
-## Test
-
-Do test to check setup process is success or not.
-
-    prove t
-
-If "All tests successful" is shown, setup process is success.
-
-## Configuration
-
-Same as Shared Server's Configuration section.
-
-## Operation
-
 ### Start
 
-You can start application start.
-Application is run in background, port is **10030** by default.
+You can start the application by running the provided webdbviewer script.
+The application is run in the background and the port is **10020** by default.
 
     ./webdbviewer
 
-You can access the following URL.
-      
-    http://localhost:10030
-    
-If you change port, edit webdbviewer.conf.
-If you can't access this port, you might change firewall setting.
+Then access the following URL.
+
+    http://localhost:10020
+
+If you want to change the port, edit webdbviewer.conf.
+If you cannot access this port, you might change the firewall settings.
 
 ### Stop
 
-You can stop application by **--stop** option.
+You can stop the application by adding the **--stop** option.
 
     ./webdbviewer --stop
-
-### Operation from root user
-
-You can operation application from root user.
-
-Start application
-
-    sudo -u webdbviewer /home/webdbviewer/webdbviewer/webdbviewer
-
-Stop application
-
-    sudo -u webdbviewer /home/webdbviewer/webdbviewer/webdbviewer --stop
-
-If you want to start application when os start,
-add the start application command to **rc.local**(Linux).
-
-If you want to make easy to manage webdbviewer,
-Let's create run script.
-    
-    mkdir -p /webapp
-    echo '#!/bin/sh' > /webapp/webdbviewer
-    echo 'su - webdbviewer -c "/home/webdbviewer/webdbviewer/webdbviewer $*"' >> /webapp/webdbviewer
-    chmod 755 /webapp/webdbviewer
-
-You can start and stop application the following command.
-    
-    # Start/Restart
-    /webapp/webdbviewer
-    
-    # Stop
-    /webapp/webdbviewer --stop
     
 ## Developer
 
@@ -226,7 +207,7 @@ It is useful to write configuration in ***webdbviewer.my.conf***
 
 ## Sister project
 
-* [GitPrep](https://github.com/yuki-kimoto/gitprep) - Github clone. you can install portable github system into unix/linux.
+* [webdbviewer](https://github.com/yuki-kimoto/gitprep) - Github clone. you can install portable github system into unix/linux.
 
 ## Copyright & license
 
