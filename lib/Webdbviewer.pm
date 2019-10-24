@@ -4,7 +4,7 @@ use Mojo::Base 'Mojolicious';
 use DBIx::Custom;
 use Carp 'croak';
 
-our $VERSION = 'v1.2';
+our $VERSION = 'v1.3';
 
 sub startup {
   my $self = shift;
@@ -83,7 +83,7 @@ sub startup {
   
   # Join
   my $join = {};
-  for my $ncolumn (keys %{$conf->{join} || {}}) {
+  for my $ncolumn (sort keys %{$conf->{join} || {}}) {
     my $clause = $conf->{join}{$ncolumn};
     if ($ncolumn =~ /(.+)\[\d+\]?/) {
       my $column = $1;
