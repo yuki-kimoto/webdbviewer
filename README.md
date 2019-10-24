@@ -154,13 +154,13 @@ database type, database name, user, password, host, or port.
 ### Start
 
 You can start the application by running the provided webdbviewer script.
-The application is run in the background and the port is **10020** by default.
+The application is run in the background and the port is **10030** by default.
 
     ./webdbviewer
 
 Then access the following URL.
 
-    http://localhost:10020
+    http://localhost:10030
 
 If you want to change the port, edit webdbviewer.conf.
 If you cannot access this port, you might change the firewall settings.
